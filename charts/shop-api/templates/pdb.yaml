@@ -1,0 +1,14 @@
+{{- if .Values.pdb.enabled }}
+{{- $fullName := include "shop-api.fullname" . -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "shop-api.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.pdb.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "shop-api.selectorLabels" . | nindent 6 }}
+{{- end }}
